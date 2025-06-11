@@ -37,7 +37,8 @@ export const Header = () => {
 
       {/* User Menu */}
       <div className="navbar-end">
-      <ReleaseNotesDialog />
+        <ReleaseNotesDialog />
+        
         <div className="dropdown dropdown-end">
           <div className="btn btn-ghost btn-circle avatar" role="button" tabIndex={0}>
             <div className="w-8 rounded-full bg-primary text-primary-content flex items-center justify-center text-sm font-medium">

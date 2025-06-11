@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Bell } from "lucide-react";
 import { releaseNotes } from "../model/notes";
 import { useI18n } from "locales/client";
+import { format, parseISO } from "date-fns";
 
 export function ReleaseNotesDialog() {
   const t = useI18n();
@@ -25,7 +26,9 @@ export function ReleaseNotesDialog() {
         <div className="space-y-4">
           {releaseNotes.map((note) => (
             <div key={note.date} className="border-b pb-2 last:border-b-0 last:pb-0">
-              <div className="text-xs text-muted-foreground">{note.date}</div>
+                <div className="text-xs text-muted-foreground">
+                 {format(parseISO(note.date), "MMMM d, yyyy")}
+                </div>
               <div className="font-semibold">{note.title}</div>
               <div className="text-sm">{note.content}</div>
             </div>
