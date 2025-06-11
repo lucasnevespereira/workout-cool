@@ -9,6 +9,14 @@ export default {
   error: {
     invalid_credentials: "Invalid credentials or account does not exist",
   },
+
+
+  // Release Notes
+  release_notes: {
+    title: "What's New",
+    release_notes: "Release Notes",
+  },
+
   // Contact Support
   contact_support: "Contact Support",
   contact_support_subtitle: "Describe your issue and we'll help you as soon as possible. You can also write to us directly at",

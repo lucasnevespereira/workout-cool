@@ -9,6 +9,13 @@ export default {
   error: {
     invalid_credentials: "Identifiants invalides ou compte inexistant",
   },
+
+  // Release Notes
+  release_notes: {
+    title: "Nouveautés",
+    release_notes: "Notes",
+  },
+
   // Contact Support
   contact_support: "Contacter le support",
   contact_support_subtitle: "Décrivez votre problème et nous vous aiderons dès que possible. Vous pouvez aussi nous écrire directement à",
