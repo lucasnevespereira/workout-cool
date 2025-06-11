@@ -1,4 +1,4 @@
-.PHONY: init dev up down db-reset db-migrate db-generate help
+.PHONY: init dev up down db-reset db-migrate db-generate db-seed help
 
 help:
 	@echo "🚀 Workout Cool Development Commands"
@@ -9,10 +9,11 @@ help:
 	@echo "  db-migrate  - Run Prisma migrations to update database schema"
 	@echo "  db-generate - Generate Prisma client for type-safe database access"
 	@echo "  db-reset    - Reset database (⚠️ Destructive! Drops all data)"
+	@echo "  db-seed     - Seed database with sample data"
 	@echo ""
 	@echo "🛠️  Development:"
 	@echo "  dev         - Start Next.js development server"
-	@echo "  init        - Full setup: start DB, run migrations, and start dev server"
+	@echo "  init        - Full setup: start DB, run migrations, seed data, and start dev server"
 	@echo ""
 	@echo "Usage: make <target>"
 	@echo "Example: make init"
@@ -37,9 +38,13 @@ db-generate:
 db-reset:
 	npx prisma migrate reset --force
 
+# Seed database with sample data
+db-seed:
+	pnpm run import:exercises-full ./data/sample-exercises.csv
+
 # Start the dev server
 dev:
 	pnpm dev
 
-# Initialize dev environment (start DB, run migration, start dev server)
-init: up db-migrate dev
+# Initialize dev environment (start DB, run migration, seed data, start dev server)
+init: up db-migrate db-seed dev
