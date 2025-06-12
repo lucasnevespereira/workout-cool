@@ -1,6 +1,7 @@
 import { getLocalizedMdx } from "@/shared/lib/mdx/load-mdx";
-import { Layout, LayoutContent } from "@/features/page/layout";
 import { Typography } from "@/components/ui/typography";
+
+import { Layout, LayoutContent } from "@/features/page/layout";
 
 type PageProps = {
   params: Promise<{ locale: string }>;
