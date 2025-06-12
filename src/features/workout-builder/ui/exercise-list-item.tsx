@@ -28,7 +28,6 @@ export function ExerciseListItem({ exercise, muscle, onShuffle, onPick, onDelete
   const exerciseName = locale === "fr" ? exercise.name : exercise.nameEn;
   const [showVideo, setShowVideo] = useState(false);
 
-
   const handleOpenVideo = () => {
     setShowVideo(true);
   };

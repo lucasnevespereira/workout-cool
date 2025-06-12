@@ -10,6 +10,25 @@ export default {
     invalid_credentials: "Identifiants invalides ou compte inexistant",
   },
 
+  // Profile Image Upload Form
+  profile_image: "Image de profil",
+  profile_image_upload_form: {
+    title: "Image de profil",
+    description: "Téléchargez une image de profil pour votre compte",
+  },
+
+  INVALID_FILE_TYPE: "Type de fichier invalide",
+  FILE_TOO_LARGE: "Fichier trop grand",
+  FILE_UPLOAD_ERROR: "Erreur lors du téléchargement du fichier",
+  FILE_UPLOAD_SUCCESS: "Fichier téléchargé avec succès",
+  FILE_UPLOAD_CANCELLED: "Téléchargement annulé",
+  FILE_UPLOAD_PROGRESS: "Téléchargement en cours",
+  FILE_UPLOAD_FAILED: "Téléchargement échoué",
+  NO_FILE_UPLOADED: "Aucun fichier téléchargé",
+  IMAGE_PROCESSING_ERROR: "Erreur lors du traitement de l'image",
+  UPLOAD_FAILED: "Téléchargement échoué",
+  profile_image_hint: "Téléchargez une image de profil pour votre compte",
+
   // Release Notes
   release_notes: {
     title: "Nouveautés",

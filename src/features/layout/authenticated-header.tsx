@@ -36,6 +36,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Button } from "@/workoutcool/components/ui/button";
 import { LanguageSelector } from "@/widgets/language-selector/language-selector";
 import { cn } from "@/shared/lib/utils";
+import { getImageUrl } from "@/shared/lib/storage/get-image";
 import { PLACEHOLDERS } from "@/shared/constants/placeholders";
 import { paths } from "@/shared/constants/paths";
 import { useSidebarToggle } from "@/features/layout/useSidebarToggle";
@@ -48,8 +49,6 @@ import { displayFirstNameAndFirstLetterLastName } from "@/entities/user/lib/disp
 import { brandedToast } from "@/components/ui/toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import { LogoSvg } from "@/components/svg/LogoSvg";
-
-import { getImageUrl } from "@/shared/lib/storage/get-image";
 
 interface UploadProfileImageParams {
   file: File;
@@ -91,7 +90,7 @@ export function useProfileImageUpload() {
           brandedToast({ title: t("IMAGE_PROCESSING_ERROR"), variant: "error" });
         }
 
-        throw new Error(data.error || t("upload_failed"));
+        throw new Error(data.error || t("UPLOAD_FAILED"));
       }
 
       return res.json();

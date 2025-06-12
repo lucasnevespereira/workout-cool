@@ -10,6 +10,25 @@ export default {
     invalid_credentials: "Invalid credentials or account does not exist",
   },
 
+  // Profile Image Upload Form
+  profile_image: "Profile image",
+  profile_image_upload_form: {
+    title: "Profile image",
+    description: "Upload a profile image for your account",
+  },
+
+  INVALID_FILE_TYPE: "Invalid file type",
+  FILE_TOO_LARGE: "File too large",
+  FILE_UPLOAD_ERROR: "File upload error",
+  FILE_UPLOAD_SUCCESS: "File uploaded successfully",
+  FILE_UPLOAD_CANCELLED: "File upload cancelled",
+  FILE_UPLOAD_PROGRESS: "File upload in progress",
+  FILE_UPLOAD_FAILED: "File upload failed",
+  NO_FILE_UPLOADED: "No file uploaded",
+  IMAGE_PROCESSING_ERROR: "Image processing error",
+  UPLOAD_FAILED: "Upload failed",
+  profile_image_hint: "Upload a profile image for your account",
+
   // Release Notes
   release_notes: {
     title: "What's New",

@@ -3,14 +3,13 @@
 import { Camera } from "lucide-react";
 
 import { useI18n } from "locales/client";
+import { ImageUpload } from "@/shared/ui/image-upload";
+import { getImageUrl } from "@/shared/lib/storage/get-image";
 import { useProfileImageUpload } from "@/features/layout/authenticated-header";
 import { useSession } from "@/features/auth/lib/auth-client";
 import { useCurrentUser } from "@/entities/user/model/useCurrentUser";
 import { brandedToast } from "@/components/ui/toast";
 import { Skeleton } from "@/components/ui/skeleton";
-
-import { ImageUpload } from "@/shared/ui/image-upload";
-import { getImageUrl } from "@/shared/lib/storage/get-image";
 
 export function ProfileImageUploadForm({ isDisabled }: { isDisabled: boolean }) {
   const t = useI18n();
@@ -19,7 +18,7 @@ export function ProfileImageUploadForm({ isDisabled }: { isDisabled: boolean }) 
   const { refetch: refetchSession } = useSession();
 
   const handleUploadSuccess = () => {
-    brandedToast({ title: t("upload_success"), variant: "success" });
+    brandedToast({ title: t("FILE_UPLOAD_SUCCESS"), variant: "success" });
     refetchSession();
   };
 
@@ -29,7 +28,7 @@ export function ProfileImageUploadForm({ isDisabled }: { isDisabled: boolean }) 
     if (error.message === "FILE_TOO_LARGE") {
       brandedToast({ title: t("FILE_TOO_LARGE"), variant: "error" });
     } else {
-      brandedToast({ title: t("generic_error"), variant: "error" });
+      brandedToast({ title: t("FILE_UPLOAD_ERROR"), variant: "error" });
     }
   };
 
