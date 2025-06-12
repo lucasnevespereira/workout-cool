@@ -11,6 +11,8 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
+import { ExerciseVideoModal } from "./exercise-video-modal";
+
 import type { ExerciseWithAttributes } from "../types";
 
 interface ExerciseCardProps {
@@ -24,6 +26,7 @@ interface ExerciseCardProps {
 export function ExerciseCard({ exercise, muscle, onShuffle, onPick, onDelete }: ExerciseCardProps) {
   const t = useI18n();
   const [imageError, setImageError] = useState(false);
+  const [showVideo, setShowVideo] = useState(false);
 
   // Extraire les attributs utiles
   const equipmentAttributes =
@@ -51,7 +54,12 @@ export function ExerciseCard({ exercise, muscle, onShuffle, onPick, onDelete }: 
                   src={exercise.fullVideoImageUrl}
                 />
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <Button className="bg-white/90 text-slate-900" size="small" variant="secondary">
+                  <Button
+                    className="bg-white/90 text-slate-900"
+                    onClick={() => setShowVideo(true)}
+                    size="small"
+                    variant="secondary"
+                  >
                     <Play className="h-4 w-4 mr-2" />
                     {t("workout_builder.exercise.watch_video")}
                   </Button>
@@ -166,6 +174,15 @@ export function ExerciseCard({ exercise, muscle, onShuffle, onPick, onDelete }: 
           </div>
         </CardContent>
       </Card>
-    </TooltipProvider>
+      {/* Video Modal */}
+      {exercise.fullVideoUrl && (
+        <ExerciseVideoModal
+          onOpenChange={setShowVideo}
+          open={showVideo}
+          title={exercise.name}
+          videoUrl={exercise.fullVideoUrl}
+        />
+      )}
+    </TooltipProvider >
   );
 }
