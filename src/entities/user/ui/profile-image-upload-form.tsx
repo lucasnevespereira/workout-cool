@@ -3,13 +3,14 @@
 import { Camera } from "lucide-react";
 
 import { useI18n } from "locales/client";
-import { ImageUpload } from "@/shared/ui/image-upload";
-import { getImageUrl } from "@/shared/lib/storage/get-image";
 import { useProfileImageUpload } from "@/features/layout/authenticated-header";
 import { useSession } from "@/features/auth/lib/auth-client";
 import { useCurrentUser } from "@/entities/user/model/useCurrentUser";
 import { brandedToast } from "@/components/ui/toast";
 import { Skeleton } from "@/components/ui/skeleton";
+
+import { ImageUpload } from "@/shared/ui/image-upload";
+import { getImageUrl } from "@/shared/lib/storage/get-image";
 
 export function ProfileImageUploadForm({ isDisabled }: { isDisabled: boolean }) {
   const t = useI18n();

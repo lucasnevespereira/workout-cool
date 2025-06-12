@@ -31,14 +31,13 @@ import {
 import { useMutation } from "@tanstack/react-query";
 
 import { useI18n } from "locales/client";
-import { LanguageSelector } from "@/widgets/language-selector/language-selector";
-import { cn } from "@/shared/lib/utils";
-import { getImageUrl } from "@/shared/lib/storage/get-image";
-import { PLACEHOLDERS } from "@/shared/constants/placeholders";
-import { paths } from "@/shared/constants/paths";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/workoutcool/components/ui/hover-card";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/workoutcool/components/ui/dropdown-menu";
 import { Button } from "@/workoutcool/components/ui/button";
+import { LanguageSelector } from "@/widgets/language-selector/language-selector";
+import { cn } from "@/shared/lib/utils";
+import { PLACEHOLDERS } from "@/shared/constants/placeholders";
+import { paths } from "@/shared/constants/paths";
 import { useSidebarToggle } from "@/features/layout/useSidebarToggle";
 import NavLink from "@/features/layout/nav-link";
 import { ContactFeedbackPopover } from "@/features/contact-feedback/ui/contact-feedback-popover";
@@ -49,6 +48,8 @@ import { displayFirstNameAndFirstLetterLastName } from "@/entities/user/lib/disp
 import { brandedToast } from "@/components/ui/toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import { LogoSvg } from "@/components/svg/LogoSvg";
+
+import { getImageUrl } from "@/shared/lib/storage/get-image";
 
 interface UploadProfileImageParams {
   file: File;
