@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { Play, Shuffle, MoreVertical, Trash2, Info, Target } from "lucide-react";
 
-import { useI18n } from "locales/client";
+import { useCurrentLocale, useI18n } from "locales/client";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -25,6 +25,7 @@ interface ExerciseCardProps {
 
 export function ExerciseCard({ exercise, muscle, onShuffle, onPick, onDelete }: ExerciseCardProps) {
   const t = useI18n();
+  const locale = useCurrentLocale();
   const [imageError, setImageError] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
 
@@ -36,6 +37,13 @@ export function ExerciseCard({ exercise, muscle, onShuffle, onPick, onDelete }: 
     exercise.attributes?.filter((attr) => attr.attributeName.name === "TYPE").map((attr) => attr.attributeValue.value) || [];
 
   const mechanicsType = exercise.attributes?.find((attr) => attr.attributeName.name === "MECHANICS_TYPE")?.attributeValue.value;
+
+  const exerciseName = locale === "fr" ? exercise.name : exercise.nameEn
+
+  const handlePlayVideo = () => {
+    setShowVideo(true);
+  };
+
 
   return (
     <TooltipProvider>
@@ -56,7 +64,7 @@ export function ExerciseCard({ exercise, muscle, onShuffle, onPick, onDelete }: 
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                   <Button
                     className="bg-white/90 text-slate-900"
-                    onClick={() => setShowVideo(true)}
+                    onClick={handlePlayVideo}
                     size="small"
                     variant="secondary"
                   >
@@ -179,7 +187,7 @@ export function ExerciseCard({ exercise, muscle, onShuffle, onPick, onDelete }: 
         <ExerciseVideoModal
           onOpenChange={setShowVideo}
           open={showVideo}
-          title={exercise.name}
+          title={exerciseName || exercise.name}
           videoUrl={exercise.fullVideoUrl}
         />
       )}

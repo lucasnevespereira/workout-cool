@@ -1,4 +1,8 @@
+"use client";
+
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { getYouTubeEmbedUrl } from "@/shared/lib/youtube";
+import { useI18n } from "locales/client";
 
 interface ExerciseVideoModalProps {
   open: boolean;
@@ -7,14 +11,10 @@ interface ExerciseVideoModalProps {
   title: string;
 }
 
-function getYouTubeEmbedUrl(url: string): string | null {
-  const regExp = /(?:youtube\.com\/(?:watch\?v=|embed\/|v\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/;
-  const match = url.match(regExp);
-  return match ? `https://www.youtube.com/embed/${match[1]}?autoplay=1` : null;
-}
 
 export function ExerciseVideoModal({ open, onOpenChange, videoUrl, title }: ExerciseVideoModalProps) {
-  const youTubeEmbed = getYouTubeEmbedUrl(videoUrl);
+  const youTubeEmbedUrl = getYouTubeEmbedUrl(videoUrl);
+  const t = useI18n();
 
   return (
     <Dialog onOpenChange={onOpenChange} open={open}>
@@ -24,12 +24,12 @@ export function ExerciseVideoModal({ open, onOpenChange, videoUrl, title }: Exer
         </DialogHeader>
         <div className="w-full aspect-video bg-black flex items-center justify-center">
           {videoUrl ? (
-            youTubeEmbed ? (
+            youTubeEmbedUrl ? (
               <iframe
                 allow="autoplay; encrypted-media"
                 allowFullScreen
                 className="w-full h-full border-0"
-                src={youTubeEmbed}
+                src={youTubeEmbedUrl}
                 title={title}
               />
             ) : (
@@ -42,7 +42,9 @@ export function ExerciseVideoModal({ open, onOpenChange, videoUrl, title }: Exer
               />
             )
           ) : (
-            <div className="text-white text-center p-8">No video available.</div>
+            <div className="text-white text-center p-8">
+              {t("workout_builder.exercise.no_video_available")}
+            </div>
           )}
         </div>
       </DialogContent>

@@ -28,6 +28,11 @@ export function ExerciseListItem({ exercise, muscle, onShuffle, onPick, onDelete
   const exerciseName = locale === "fr" ? exercise.name : exercise.nameEn;
   const [showVideo, setShowVideo] = useState(false);
 
+
+  const handleOpenVideo = () => {
+    setShowVideo(true);
+  };
+
   // Déterminer la couleur du muscle
   const getMuscleConfig = (muscle: string) => {
     const configs: Record<string, { color: string; bg: string }> = {
@@ -76,7 +81,7 @@ export function ExerciseListItem({ exercise, muscle, onShuffle, onPick, onDelete
               />
               {/* Overlay play icon */}
               <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                <Play className="h-3 w-3 text-white fill-current" onClick={() => setShowVideo(true)} />
+                <Play className="h-3 w-3 text-white fill-current" onClick={handleOpenVideo} />
               </div>
             </div>
           )}
@@ -140,7 +145,7 @@ export function ExerciseListItem({ exercise, muscle, onShuffle, onPick, onDelete
         <ExerciseVideoModal
           onOpenChange={setShowVideo}
           open={showVideo}
-          title={exercise.name}
+          title={exerciseName || exercise.name}
           videoUrl={exercise.fullVideoUrl}
         />
       )}
