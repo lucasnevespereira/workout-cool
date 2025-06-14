@@ -1,9 +1,6 @@
 import { z } from "zod";
 import { createEnv } from "@t3-oss/env-nextjs";
 
-const isTest = process.env.NODE_ENV === "test";
-const isCI = process.env.CI === "true";
-
 /**
  * This is the schema for the environment variables.
  *
@@ -33,5 +30,4 @@ export const env = createEnv({
     NEXT_PUBLIC_OPENPANEL_CLIENT_ID: process.env.NEXT_PUBLIC_OPENPANEL_CLIENT_ID,
     NEXT_PUBLIC_FACEBOOK_PIXEL_ID: process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID,
   },
-  skipValidation: isTest || isCI,
 });
