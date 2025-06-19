@@ -241,10 +241,10 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 ```bash
 # Build the Docker image
-docker build -t workout-cool .
+docker build -t yourusername/workout-cool .
 
 # Run the container
-docker run -p 3000:3000 workout-cool
+docker run -p 3000:3000 --env-file .env yourusername/workout-cool
 ```
 
 ### Manual Deployment

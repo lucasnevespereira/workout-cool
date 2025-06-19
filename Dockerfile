@@ -5,17 +5,18 @@ ENV NODE_ENV=production
 
 RUN npm install -g pnpm
 
-# Install dependencies (including Prisma for build)
+# Install dependencies
 FROM base AS deps
 COPY package.json pnpm-lock.yaml ./
 COPY prisma ./prisma
-RUN pnpm install --frozen-lockfile --prod
+RUN pnpm install --frozen-lockfile
 
 # Build the app
 FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/prisma ./prisma
 COPY . .
+COPY .env.example .env
 RUN pnpm run build
 
 # Production image, copy only necessary files
