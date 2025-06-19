@@ -244,7 +244,7 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 docker build -t yourusername/workout-cool .
 
 # Run the container
-docker run -p 3000:3000 --env-file .env yourusername/workout-cool
+docker run -p 3000:3000 --env-file .env.production yourusername/workout-cool
 ```
 
 ### Manual Deployment

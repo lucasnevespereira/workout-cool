@@ -1,8 +1,6 @@
 FROM node:20-alpine AS base
 
 WORKDIR /app
-ENV NODE_ENV=production
-
 RUN npm install -g pnpm
 
 # Install dependencies
@@ -28,6 +26,11 @@ COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/prisma ./prisma
+
+COPY scripts/setup.sh /app/setup.sh
+RUN chmod +x /app/setup.sh
+
+ENTRYPOINT ["/app/setup.sh"]
 
 EXPOSE 3000
 ENV PORT=3000
