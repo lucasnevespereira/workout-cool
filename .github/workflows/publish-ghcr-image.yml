@@ -35,6 +35,6 @@ jobs:
         run: |
                 docker build . --tag ghcr.io/lucasnevespereira/workout-cool:${{ steps.vars.outputs.tag }}
 
-      # - name: Push Docker image
-      #   run: |
-      #           docker push ghcr.io/lucasnevespereira/workout-cool:${{ steps.vars.outputs.tag }}
+      - name: Push Docker image
+        run: |
+                docker push ghcr.io/lucasnevespereira/workout-cool:${{ steps.vars.outputs.tag }}
