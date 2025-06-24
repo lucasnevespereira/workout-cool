@@ -8,6 +8,8 @@ import { WorkoutSessionTimer } from "@/features/workout-session/ui/workout-sessi
 import { Link } from "@/components/ui/link";
 import { DiscordSvg } from "@/components/svg/DiscordSvg";
 
+import { Version } from "@/components/version";
+
 const SOCIAL_LINKS = [
   {
     href: "https://github.com/Snouzy/workout-cool",
