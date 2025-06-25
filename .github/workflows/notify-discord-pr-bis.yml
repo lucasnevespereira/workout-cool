@@ -1,0 +1,111 @@
+name: Notify Discord PR
+
+on:
+  workflow_run:
+    workflows: ["Export PR Metadata"]
+    types:
+      - completed
+
+jobs:
+  notify-discord:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - name: Download PR metadata artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pr-metadata
+
+      - name: Parse PR metadata
+        id: parse
+        run: |
+          PR_JSON=$(cat metadata.json)
+          echo "number=$(echo "$PR_JSON" | jq -r '.number')" >> $GITHUB_OUTPUT
+          echo "title=$(echo "$PR_JSON" | jq -r '.title')" >> $GITHUB_OUTPUT
+          echo "html_url=$(echo "$PR_JSON" | jq -r '.html_url')" >> $GITHUB_OUTPUT
+          echo "author_login=$(echo "$PR_JSON" | jq -r '.user.login')" >> $GITHUB_OUTPUT
+          echo "author_url=$(echo "$PR_JSON" | jq -r '.user.html_url')" >> $GITHUB_OUTPUT
+          echo "state=$(echo "$PR_JSON" | jq -r '.state')" >> $GITHUB_OUTPUT
+          echo "created_at=$(echo "$PR_JSON" | jq -r '.created_at')" >> $GITHUB_OUTPUT
+          echo "labels=$(echo "$PR_JSON" | jq -r '.labels | map(.name) | join(", ") // "None"')" >> $GITHUB_OUTPUT
+          echo "head_ref=$(echo "$PR_JSON" | jq -r '.head.ref')" >> $GITHUB_OUTPUT
+          echo "base_ref=$(echo "$PR_JSON" | jq -r '.base.ref')" >> $GITHUB_OUTPUT
+          echo "is_draft=$(echo "$PR_JSON" | jq -r '.draft')" >> $GITHUB_OUTPUT
+
+      - name: Determine action color and emoji
+        id: action-info
+        run: |
+          if [ "${{ steps.parse.outputs.state }}" = "open" ]; then
+            if [ "${{ steps.parse.outputs.is_draft }}" = "true" ]; then
+              echo "color=8421504" >> $GITHUB_OUTPUT   # Gray
+              echo "emoji=📝" >> $GITHUB_OUTPUT
+              echo "action_text=Draft" >> $GITHUB_OUTPUT
+            else
+              echo "color=5763719" >> $GITHUB_OUTPUT   # Green
+              echo "emoji=🔄" >> $GITHUB_OUTPUT
+              echo "action_text=Opened" >> $GITHUB_OUTPUT
+            fi
+          elif [ "${{ steps.parse.outputs.state }}" = "closed" ]; then
+            echo "color=15158332" >> $GITHUB_OUTPUT    # Red
+            echo "emoji=❌" >> $GITHUB_OUTPUT
+            echo "action_text=Closed" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Discord webhook payload
+        run: |
+          jq -n \
+            --arg avatar_url "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" \
+            --arg title "${{ steps.action-info.outputs.emoji }} Pull Request ${{ steps.action-info.outputs.action_text }}: #${{ steps.parse.outputs.number }}" \
+            --arg description "${{ steps.parse.outputs.title }}" \
+            --arg url "${{ steps.parse.outputs.html_url }}" \
+            --argjson color ${{ steps.action-info.outputs.color }} \
+            --arg thumbnail_url "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" \
+            --arg pr_number "#${{ steps.parse.outputs.number }}" \
+            --arg author_name "${{ steps.parse.outputs.author_login }}" \
+            --arg author_url "${{ steps.parse.outputs.author_url }}" \
+            --arg repo_name "${{ github.repository }}" \
+            --arg repo_url "https://github.com/${{ github.repository }}" \
+            --arg branch "${{ steps.parse.outputs.head_ref }} → ${{ steps.parse.outputs.base_ref }}" \
+            --arg labels "${{ steps.parse.outputs.labels }}" \
+            --arg status "${{ steps.parse.outputs.state }}" \
+            --arg pr_url "${{ steps.parse.outputs.html_url }}" \
+            --arg timestamp "${{ steps.parse.outputs.created_at }}" \
+            --arg footer_text "Workout Cool • PR ${{ steps.action-info.outputs.action_text }}" \
+            --arg footer_icon "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" \
+            '{
+              "avatar_url": $avatar_url,
+              "embeds": [
+                {
+                  "title": $title,
+                  "description": $description,
+                  "url": $url,
+                  "color": $color,
+                  "thumbnail": {
+                    "url": $thumbnail_url
+                  },
+                  "fields": [
+                    { "name": "📋 PR #", "value": $pr_number, "inline": true },
+                    { "name": "👤 Author", "value": ("[\($author_name)](\($author_url))"), "inline": true },
+                    { "name": "📁 Repository", "value": ("[\($repo_name)](\($repo_url))"), "inline": true },
+                    { "name": "🌿 Branch", "value": $branch, "inline": true },
+                    { "name": "🏷️ Labels", "value": $labels, "inline": true },
+                    { "name": "📊 Status", "value": $status, "inline": true },
+                    { "name": "🔗 View PR", "value": ("[Pull Request](\($pr_url))"), "inline": true }
+                  ],
+                  "timestamp": $timestamp,
+                  "footer": {
+                    "text": $footer_text,
+                    "icon_url": $footer_icon
+                  }
+                }
+              ]
+            }' > discord_payload.json
+
+      - name: Send Discord notification
+        run: |
+          curl -H "Content-Type: application/json" \
+               -d @discord_payload.json \
+               "${{ secrets.DISCORD_PR_WEBHOOK }}"

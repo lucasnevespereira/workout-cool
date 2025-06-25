@@ -1,0 +1,23 @@
+name: Export PR Metadata
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  export-pr-metadata:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+      actions: write
+    steps:
+      - name: Export PR metadata
+        run: |
+          mkdir -p pr-metadata
+          echo "${{ toJSON(github.event.pull_request) }}" > pr-metadata/metadata.json
+      - name: Upload metadata artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-metadata
+          path: pr-metadata/metadata.json

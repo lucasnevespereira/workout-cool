@@ -1,3 +1,4 @@
+# to replace if notify-discord-pr-bis works
 name: Discord PR Notification
 
 on:
@@ -134,7 +135,7 @@ jobs:
 
           # Escape special characters for JSON
           PR_TITLE_ESCAPED=$(echo "$PR_TITLE" | sed 's/"/\\"/g' | sed "s/'/\\'/g")
-          
+
           # Create a temporary JSON file using jq to ensure valid JSON
           jq -n \
             --arg avatar_url "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" \
