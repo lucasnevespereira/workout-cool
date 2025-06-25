@@ -47,7 +47,7 @@
 
 <div>
   <h4>They are helping making workout.cool free and open-source for everyone :</h4>
-  
+
 <a href="https://vercel.com/oss">
   <img alt="Vercel OSS Program" src="https://vercel.com/oss/program-badge.svg" />
 </a>
@@ -74,7 +74,7 @@
       </td>
     </tr>
   </table>
-  
+
 </div>
 
 ## About
@@ -300,6 +300,8 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 - Write meaningful commit messages
 
 ## Deployment / Self-hosting
+
+> 📖 **For detailed self-hosting instructions, see our [Complete Self-hosting Guide](docs/SELF-HOSTING.md)**
 
 To seed the database with the sample exercises, set the `SEED_SAMPLE_DATA` env variable to `true`.
 
