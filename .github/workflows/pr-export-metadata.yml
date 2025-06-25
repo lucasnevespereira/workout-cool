@@ -13,9 +13,11 @@ jobs:
       actions: write
     steps:
       - name: Export PR metadata
+        env:
+         PR_JSON: ${{ toJSON(github.event.pull_request) }}
         run: |
           mkdir -p pr-metadata
-          echo "${{ toJSON(github.event.pull_request) }}" > pr-metadata/metadata.json
+          echo "$PR_JSON" > pr-metadata/metadata.json
       - name: Upload metadata artifact
         uses: actions/upload-artifact@v4
         with:
