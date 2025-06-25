@@ -1,9 +1,8 @@
-# to replace if notify-discord-pr-bis works
 name: Discord PR Notification
 
 on:
   pull_request_target:
-    types: [opened, reopened, synchronize, ready_for_review]
+    types: [opened, reopened, synchronize, ready_for_review, closed]
   workflow_dispatch:
     inputs:
       pr_number:
