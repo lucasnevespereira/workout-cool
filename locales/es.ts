@@ -61,7 +61,7 @@ export default {
     share_failed: "Error al compartir",
     important_info: "Información importante",
     donation_teaser:
-      "Al principio, funcionábamos con donaciones. Pero como puedes imaginar, las donaciones no fueron suficientes para cubrir los costos de desarrollo y funcionamiento. Así que creamos un paquete que nos ayudará a mantener las luces encendidas — y desbloquear algunos superpoderes en el camino.",
+      "Al principio, funcionábamos con donaciones. Pero como puedes imaginar, las donaciones no fueron suficientes para cubrir los costos de desarrollo y funcionamiento. Así que creamos un paquete que nos ayudará a mantener las luces encendidas y desbloquear algunos superpoderes en el camino.",
     new: "NUEVO",
     more_programs_coming_title: "Más programas pronto!",
     more_programs_coming_description:
@@ -90,7 +90,7 @@ export default {
     free_intro_text:
       "Workout.cool es una aplicación de fitness gratuita y de código abierto utilizada diariamente por más de 60,000 usuarios. Está construida con amor (no con dinero de VC ^^) y nos cuesta tiempo y dinero real mantenerla funcionando.",
     donation_story_text:
-      "Al principio, funcionábamos con donaciones. Pero como puedes imaginar, las donaciones no fueron suficientes para cubrir los costos de desarrollo y funcionamiento. Así que creamos un paquete que nos ayudará a mantener las luces encendidas — y desbloquear algunos superpoderes en el camino.",
+      "Al principio, funcionábamos con donaciones. Pero como puedes imaginar, las donaciones no fueron suficientes para cubrir los costos de desarrollo y funcionamiento. Así que creamos un paquete que nos ayudará a mantener las luces encendidas y desbloquear algunos superpoderes en el camino.",
     health_upgrade_text: "Si Workout.cool te ayuda a mejorar tu salud, por favor considera pasarte a Premium :D !",
     unlock_features_text: "Desbloquea funciones avanzadas y apoya el fitness de código abierto.",
     invest_yourself_quote: "Nunca escatimes en fitness y libros — ¡invierte en ti mismo!",

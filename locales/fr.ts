@@ -63,7 +63,7 @@ export default {
     share_failed: "Échec du partage",
     important_info: "Informations importantes",
     donation_teaser:
-      "Au début, nous fonctionnions grâce aux dons. Mais comme tu peux l'imaginer, les dons n'étaient pas suffisants pour couvrir les coûts de développement et de fonctionnement. Nous avons donc créé un package qui nous aidera à garder les lumières allumées — et à toi, de débloquer quelques super-pouvoirs en cours de route. :)",
+      "Au début, nous fonctionnions grâce aux dons. Mais comme tu peux l'imaginer, les dons n'étaient pas suffisants pour couvrir les coûts de développement et de fonctionnement. Nous avons donc créé un package qui nous aidera à garder les lumières allumées et à toi, de débloquer quelques super-pouvoirs en cours de route. :)",
     new: "NOUVEAU",
     more_programs_coming_title: "Encore plus de programmes en préparation !",
     more_programs_coming_description:
@@ -92,7 +92,7 @@ export default {
     free_intro_text:
       "Workout.cool est une application de fitness gratuite et open-source utilisée quotidiennement par plus de 60 000 utilisateurs. Elle est construite avec amour (pas avec l'argent des VCs ^^) et nous coûte du temps et de l'argent réels pour la maintenir en ligne.",
     donation_story_text:
-      "Au début, nous fonctionnions grâce aux dons. Mais comme vous pouvez l'imaginer, les dons n'étaient pas suffisants pour couvrir les coûts de développement et de fonctionnement. Nous avons donc créé un package qui nous aidera à garder les lumières allumées — et à débloquer quelques super-pouvoirs en cours de route.",
+      "Au début, nous fonctionnions grâce aux dons. Mais comme vous pouvez l'imaginer, les dons n'étaient pas suffisants pour couvrir les coûts de développement et de fonctionnement. Nous avons donc créé un package qui nous aidera à garder les lumières allumées et à débloquer quelques super-pouvoirs en cours de route.",
     health_upgrade_text: "Si Workout.cool vous aide à améliorer votre santé, pensez à passer Premium :D !",
     unlock_features_text: "Débloquez des fonctionnalités avancées et soutenez le fitness open-source.",
     invest_yourself_quote: "Ne lésinez jamais sur le fitness et les livres — investissez en vous-même !",
