@@ -584,6 +584,7 @@ export default {
     change_language: "更改语言",
     subscription: "订阅",
     manage_subscription: "管理订阅",
+    become_premium: "成为高级",
     in_progress: "进行中",
     premium: "高级",
     free: "免费",

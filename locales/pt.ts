@@ -593,6 +593,7 @@ export default {
     premium: "Premium",
     subscription: "Abonamento",
     manage_subscription: "Gerir abonamento",
+    become_premium: "Torne-se Premium",
     free: "Gratuito",
     new: "Novo",
   },
