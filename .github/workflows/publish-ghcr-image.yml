@@ -3,6 +3,9 @@ name: Publish Docker GHCR Image
 on:
   release:
     types: [published]
+  push:
+    branches:
+      - ci/fix-ghcr-publish
 
 permissions:
   contents: read
@@ -23,16 +26,16 @@ jobs:
 
       - name: Set image tag
         id: vars
-        run: echo "tag=${{ github.event.release.tag_name }}" >> $GITHUB_OUTPUT
+        run: echo "tag=v1.2.4" >> $GITHUB_OUTPUT
 
       - name: Build Docker image
         run: |
           docker build . \
-                    --tag ghcr.io/snouzy/workout-cool:${{ steps.vars.outputs.tag }} \
-                    --tag ghcr.io/snouzy/workout-cool:latest
+                    --tag ghcr.io/lucasnevespereira/workout-cool:${{ steps.vars.outputs.tag }} \
+                    --tag ghcr.io/lucasnevespereira/workout-cool:latest
 
       - name: Push Docker image (release tag)
-        run: docker push ghcr.io/snouzy/workout-cool:${{ steps.vars.outputs.tag }}
+        run: docker push ghcr.io/lucasnevespereira/workout-cool:${{ steps.vars.outputs.tag }}
 
       - name: Push Docker image (latest tag)
-        run: docker push ghcr.io/snouzy/workout-cool:latest
+        run: docker push ghcr.io/lucasnevespereira/workout-cool:latest
