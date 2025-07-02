@@ -8,7 +8,7 @@ on:
       version:
         description: "Version tag for the Docker image"
         required: true
-        default: "manual-build"
+        default: "1.2.5"
         type: string
 permissions:
   contents: read
@@ -31,7 +31,9 @@ jobs:
         id: vars
         run: |
           if [ "${{ github.event_name }}" = "release" ]; then
-            echo "tag=${{ github.event.release.tag_name }}" >> $GITHUB_OUTPUT
+            # Remove 'v' prefix if present for Docker tag
+            tag="${github.event.release.tag_name#v}"
+            echo "tag=$tag" >> $GITHUB_OUTPUT
           else
             echo "tag=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
           fi
