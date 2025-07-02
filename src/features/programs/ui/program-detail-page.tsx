@@ -188,7 +188,7 @@ export function ProgramDetailPage({ program, isAuthenticated }: ProgramDetailPag
                   <Users size={12} />
                   {program.participantCount}+
                 </span>
-                {/* eslint-disable-next-line max-len */}
+                {}
                 {/* {program.isPremium && <span className="bg-yellow-500 text-white px-3 py-1 rounded-full text-xs font-medium">Premium</span>} */}
               </div>
               <h1 className="text-3xl font-bold mb-2">{programTitle}</h1>
@@ -431,7 +431,6 @@ export function ProgramDetailPage({ program, isAuthenticated }: ProgramDetailPag
                       const isCompleted = completedSessions.has(session.id);
                       return (
                         <div
-                          // eslint-disable-next-line max-len
                           className={`bg-white dark:bg-gray-800 rounded-xl p-4 border-2 cursor-pointer transition-all duration-200 ease-in-out flex items-center gap-4 ${
                             isCompleted
                               ? "border-[#25CB78] bg-[#25CB78]/5"
