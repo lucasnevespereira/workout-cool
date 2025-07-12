@@ -23,14 +23,14 @@ export const Header = () => {
   const userAvatar = session.data?.user?.email?.substring(0, 2).toUpperCase() || "";
   const isPremium = premiumStatus?.isPremium ?? false;
 
-  const closeDropdown = () => {
-    if (document.activeElement instanceof HTMLElement) {
-      document.activeElement.blur();
-    }
-  };
-
   const handleSignOut = () => {
     logout.mutate();
+  };
+
+  const handleCloseDropdown = () => {
+    const element = document.activeElement as HTMLElement;
+    if (!element) return;
+    element.blur();
   };
 
   return (
@@ -89,10 +89,11 @@ export const Header = () => {
 
           <ul
             className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 dark:bg-black dark:text-gray-200 rounded-box w-52 border border-slate-200 dark:border-gray-800"
+            onClick={handleCloseDropdown}
             tabIndex={0}
           >
             <li>
-              <Link className="!no-underline" href="/profile" onClick={() => closeDropdown()} size="base" variant="nav">
+              <Link className="!no-underline" href="/profile" size="base" variant="nav">
                 <User className="w-4 h-4 text-gray-700 dark:text-gray-300" />
                 {t("commons.profile")}
               </Link>
@@ -108,7 +109,6 @@ export const Header = () => {
                 {...(isPremium && {
                   onClick: async (e) => {
                     e.preventDefault();
-                    closeDropdown();
                     try {
                       const response = await fetch("/api/premium/billing-portal", {
                         method: "POST",
@@ -144,13 +144,13 @@ export const Header = () => {
             {!session.data && !session.isPending ? (
               <>
                 <li>
-                  <Link className="!no-underline" href="/auth/signin" onClick={() => closeDropdown()} size="base" variant="nav">
+                  <Link className="!no-underline" href="/auth/signin" size="base" variant="nav">
                     <LogIn className="w-4 h-4 text-gray-700 dark:text-gray-300" />
                     {t("commons.login")}
                   </Link>
                 </li>
                 <li>
-                  <Link className="!no-underline" href="/auth/signup" onClick={() => closeDropdown()} size="base" variant="nav">
+                  <Link className="!no-underline" href="/auth/signup" size="base" variant="nav">
                     <UserPlus className="w-4 h-4 text-gray-700 dark:text-gray-300" />
                     {t("commons.register")}
                   </Link>
