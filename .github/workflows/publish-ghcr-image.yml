@@ -3,6 +3,9 @@ name: Publish Docker GHCR Image
 on:
   release:
     types: [published]
+  push:
+    branches:
+      - "fix/ci-ghcr"
   workflow_dispatch:
     inputs:
       version:
@@ -50,6 +53,6 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            ghcr.io/snouzy/workout-cool:${{ steps.vars.outputs.tag }}
-            ghcr.io/snouzy/workout-cool:latest
+            ghcr.io/lucasnevespereira/workout-cool:${{ steps.vars.outputs.tag }}
+            ghcr.io/lucasnevespereira/workout-cool:latest
           platforms: linux/amd64,linux/arm64,linux/arm/v7
