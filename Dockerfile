@@ -7,8 +7,6 @@ RUN npm install -g pnpm
 FROM base AS deps
 COPY package.json pnpm-lock.yaml ./
 COPY prisma ./prisma
-COPY node_modules/.prisma ./node_modules/.prisma
-COPY node_modules/@prisma ./node_modules/@prisma
 # ENV PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1
 RUN pnpm install --frozen-lockfile
 
