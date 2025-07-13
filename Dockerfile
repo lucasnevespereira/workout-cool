@@ -7,13 +7,14 @@ RUN npm install -g pnpm
 FROM base AS deps
 COPY package.json pnpm-lock.yaml ./
 COPY prisma ./prisma
+ENV PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1
 RUN pnpm install --frozen-lockfile
 
 # Build the app
 FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/prisma ./prisma
-ENV PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=true
+
 COPY . .
 COPY .env.example .env
 
