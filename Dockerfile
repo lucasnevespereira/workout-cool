@@ -13,6 +13,7 @@ RUN pnpm install --frozen-lockfile
 FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/prisma ./prisma
+ENV PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=true
 COPY . .
 COPY .env.example .env
 
