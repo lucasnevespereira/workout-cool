@@ -7,7 +7,7 @@ RUN npm install -g pnpm
 FROM base AS deps
 COPY package.json pnpm-lock.yaml ./
 COPY prisma ./prisma
-# ENV PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1
+ENV PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1
 RUN pnpm install --frozen-lockfile
 
 # Build the app
