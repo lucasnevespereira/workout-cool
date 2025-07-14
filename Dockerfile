@@ -7,7 +7,6 @@ RUN npm install -g pnpm
 FROM base AS deps
 COPY package.json pnpm-lock.yaml ./
 COPY prisma ./prisma
-ENV PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1
 RUN pnpm install --frozen-lockfile
 
 # Build the app
@@ -18,7 +17,7 @@ COPY --from=deps /app/prisma ./prisma
 COPY . .
 COPY .env.example .env
 
-RUN pnpm run build
+RUN pnpm run build && pnpx prisma generate
 
 # Production image, copy only necessary files
 FROM base AS runner
