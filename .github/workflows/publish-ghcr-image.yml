@@ -18,72 +18,42 @@ permissions:
   packages: write
 
 jobs:
-  # This job just generates the tags and labels to be shared by the matrix jobs
-  meta:
-    runs-on: ubuntu-latest
-    outputs:
-      tags: ${{ steps.meta.outputs.tags }}
-      labels: ${{ steps.meta.outputs.labels }}
-    steps:
-      - name: Extract Docker metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ghcr.io/${{ github.repository }}
-          tags: |
-            type=semver,pattern={{version}}
-            type=semver,pattern={{version}},value=latest
-            type=raw,value=${{ github.event.inputs.version }},enable=${{ github.event_name == 'workflow_dispatch' }}
-
-  # build job runs in parallel for each platform
-  build:
-    needs: meta
+  build_and_publish:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        platform:
-          - linux/amd64
-          - linux/arm64
-          - linux/arm/v7
+        platform: [linux/amd64, linux/arm64, linux/arm/v7] # Define platforms for concurrent builds
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
-      - name: Log in to GitHub Container Registry
+      - name: Log in to GHCR
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
+          username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set image tag
+        id: vars
+        run: |
+          if [ "${{ github.event_name }}" = "release" ]; then
+            RELEASE_TAG="${{ github.event.release.tag_name }}"
+            tag="${RELEASE_TAG#v}"
+            echo "tag=$tag" >> $GITHUB_OUTPUT
+          else
+            echo "tag=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          fi
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # builds and pushes a platform-specific image
-      - name: Build and push platform-specific image
+      - name: Build and push Docker image (${{ matrix.platform }})
         uses: docker/build-push-action@v6
         with:
           context: .
+          file: ./Dockerfile
           push: true
-          # Note the platform-specific tag suffix
-          tags: ${{ needs.meta.outputs.tags }}-${{ matrix.platform }}
-          labels: ${{ needs.meta.outputs.labels }}
-          platforms: ${{ matrix.platform }}
-
-  # final job runs after all builds are complete to create the final manifest
-  publish-manifest:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Create and push the multi-platform manifest
-        run: |
-          docker buildx imagetools create \
-            ${{ needs.meta.outputs.tags }}-${{ matrix.platform }} \
-            --tag ${{ needs.meta.outputs.tags }}
+          tags: |
+            ghcr.io/snouzy/workout-cool:test
+            ghcr.io/snouzy/workout-cool:latest
+          platforms: ${{ matrix.platform }} # Use the platform from the matrix
