@@ -23,12 +23,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Set up QEMU (for ARM emulation)
-        uses: docker/setup-qemu-action@v3
-
       - name: Log in to GHCR
         uses: docker/login-action@v3
         with:
@@ -48,16 +42,56 @@ jobs:
       #     else
       #       echo "tag=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
       #     fi
+      - name: Build and Push Docker image (amd64)
+        run: |
+          IMAGE_NAME="ghcr.io/snouzy/workout-cool"
+          TAG="test"
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: |
-            ghcr.io/lucasnevespereira/workout-cool:test
-            ghcr.io/lucasnevespereira/workout-cool:latest
-          platforms: linux/amd64,linux/arm64
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          # Build with --platform to ensure correct architecture targeting
+          # Even on an amd64 runner, it's good practice for clarity.
+          docker build --no-cache . \
+            --platform linux/amd64 \
+            --tag ${IMAGE_NAME}:${TAG}-amd64 \
+            --tag ${IMAGE_NAME}:latest-amd64
+
+          docker push ${IMAGE_NAME}:${TAG}-amd64
+          docker push ${IMAGE_NAME}:latest-amd64
+
+        # --- Build for linux/arm64 ---
+      - name: Set up QEMU for ARM64 build
+        uses: docker/setup-qemu-action@v3 # Essential for cross-architecture builds without buildx
+
+      - name: Build and Push Docker image (arm64)
+        run: |
+          IMAGE_NAME="ghcr.io/snouzy/workout-cool"
+          TAG="test"
+
+          docker build --no-cache . \
+            --platform linux/arm64 \
+            --tag ${IMAGE_NAME}:${TAG}-arm64 \
+            --tag ${IMAGE_NAME}:latest-arm64
+
+          docker push ${IMAGE_NAME}:${TAG}-arm64
+          docker push ${IMAGE_NAME}:latest-arm64
+
+        # --- Create and Push Manifest Lists ---
+      - name: Create and Push Manifest List (release tag)
+        run: |
+          IMAGE_NAME="ghcr.io/snouzy/workout-cool"
+          TAG="test"
+
+          docker manifest create ${IMAGE_NAME}:${TAG} \
+            ${IMAGE_NAME}:${TAG}-amd64 \
+            ${IMAGE_NAME}:${TAG}-arm64
+
+          docker manifest push ${IMAGE_NAME}:${TAG}
+
+      - name: Create and Push Manifest List (latest tag)
+        run: |
+          IMAGE_NAME="ghcr.io/snouzy/workout-cool"
+
+          docker manifest create ${IMAGE_NAME}:latest \
+            ${IMAGE_NAME}:latest-amd64 \
+            ${IMAGE_NAME}:latest-arm64
+
+          docker manifest push ${IMAGE_NAME}:latest
