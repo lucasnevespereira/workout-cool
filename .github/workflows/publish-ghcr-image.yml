@@ -40,8 +40,10 @@ jobs:
             RELEASE_TAG="${{ github.event.release.tag_name }}"
             tag="${RELEASE_TAG#v}"
             echo "tag=$tag" >> $GITHUB_OUTPUT
-          else
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "tag=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            echo "tag=test" >> $GITHUB_OUTPUT
           fi
 
       - name: Set up Docker Buildx
@@ -54,6 +56,6 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            ghcr.io/snouzy/workout-cool:test
-            ghcr.io/snouzy/workout-cool:latest
-          platforms: ${{ matrix.platform }} # Use the platform from the matrix
+            ghcr.io/${{ github.repository_owner }}/workout-cool:${{ steps.vars.outputs.tag }}
+            ghcr.io/${{ github.repository_owner }}/workout-cool:latest
+          platforms: ${{ matrix.platform }}
