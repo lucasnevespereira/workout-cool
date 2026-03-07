@@ -10,13 +10,18 @@ const booleanString = z.enum(["true", "false"]).transform((val) => val === "true
  */
 export const env = createEnv({
   server: {
+    // --- Core (required) ---
     BETTER_AUTH_URL: z.string().url(),
     DATABASE_URL: z.string().url(),
     GOOGLE_CLIENT_ID: z.string().min(1),
     GOOGLE_CLIENT_SECRET: z.string().min(1),
     NODE_ENV: z.enum(["development", "production", "test"]),
     BETTER_AUTH_SECRET: z.string().min(1),
+
+    // --- Analytics (optional) ---
     OPENPANEL_SECRET_KEY: z.string().optional(),
+
+    // --- Email / SMTP (optional) ---
     SMTP_HOST: z.string().optional(),
     SMTP_PORT: z.coerce.number().positive().optional(),
     SMTP_USER: z.string().optional(),
@@ -25,10 +30,12 @@ export const env = createEnv({
     //issue fixed in zod 4. See https://github.com/colinhacks/zod/issues/3906
     SMTP_SECURE: booleanString.default("false"),
 
+    // --- Billing: Stripe (optional, web subscriptions) ---
     STRIPE_SECRET_KEY: z.string().optional(),
     STRIPE_WEBHOOK_SECRET: z.string().optional(),
 
-    // RevenueCat configuration
+    // --- Billing: RevenueCat (optional, mobile in-app purchases) ---
+    // Only needed if you run the mobile app. Self-hosters can ignore these.
     REVENUECAT_SECRET_KEY: z.string().optional(),
     REVENUECAT_WEBHOOK_SECRET: z.string().optional(),
   },
@@ -37,9 +44,15 @@ export const env = createEnv({
    * `experimental__runtimeEnv` as well.
    */
   client: {
-    NEXT_PUBLIC_OPENPANEL_CLIENT_ID: z.string().optional(),
-    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().optional(),
+    // --- Core (required) ---
     NEXT_PUBLIC_APP_URL: z.string().url(),
+
+    // --- Analytics (optional) ---
+    NEXT_PUBLIC_OPENPANEL_CLIENT_ID: z.string().optional(),
+    NEXT_PUBLIC_GA4_MEASUREMENT_ID: z.string().optional(),
+
+    // --- Billing: Stripe (optional) ---
+    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().optional(),
     NEXT_PUBLIC_STRIPE_PRICE_MONTHLY_EU: z.string().optional(),
     NEXT_PUBLIC_STRIPE_PRICE_YEARLY_EU: z.string().optional(),
     NEXT_PUBLIC_STRIPE_PRICE_MONTHLY_US: z.string().optional(),
@@ -52,6 +65,9 @@ export const env = createEnv({
     NEXT_PUBLIC_STRIPE_PRICE_YEARLY_RU: z.string().optional(),
     NEXT_PUBLIC_STRIPE_PRICE_MONTHLY_CN: z.string().optional(),
     NEXT_PUBLIC_STRIPE_PRICE_YEARLY_CN: z.string().optional(),
+
+    // --- Ads (optional) ---
+    // Configure these only if you want to show ads. Self-hosters can ignore all ad variables.
     NEXT_PUBLIC_SHOW_ADS: booleanString.optional(),
     NEXT_PUBLIC_AD_CLIENT: z.string().optional(),
     NEXT_PUBLIC_VERTICAL_LEFT_BANNER_AD_SLOT: z.string().optional(),
@@ -91,7 +107,8 @@ export const env = createEnv({
     NEXT_PUBLIC_TOP_CUNNINGHAM_CALCULATOR_AD_SLOT: z.string().optional(),
     NEXT_PUBLIC_TOP_CALORIE_CALCULATOR_COMPARISON_AD_SLOT: z.string().optional(),
     NEXT_PUBLIC_BOTTOM_CALORIE_CALCULATOR_COMPARISON_AD_SLOT: z.string().optional(),
-    // Ezoic configuration
+
+    // --- Ads: Ezoic (optional, alternative to AdSense) ---
     NEXT_PUBLIC_AD_PROVIDER: z.enum(["adsense", "ezoic"]).optional().default("adsense"),
     NEXT_PUBLIC_EZOIC_VERTICAL_LEFT_PLACEMENT_ID: z.string().optional(),
     NEXT_PUBLIC_EZOIC_VERTICAL_RIGHT_PLACEMENT_ID: z.string().optional(),
@@ -99,14 +116,16 @@ export const env = createEnv({
     NEXT_PUBLIC_EZOIC_TOP_STEPPER_STEP_1_PLACEMENT_ID: z.string().optional(),
     NEXT_PUBLIC_EZOIC_TOP_STEPPER_STEP_2_PLACEMENT_ID: z.string().optional(),
     NEXT_PUBLIC_EZOIC_TOP_STEPPER_STEP_3_PLACEMENT_ID: z.string().optional(),
-    // GA4
-    NEXT_PUBLIC_GA4_MEASUREMENT_ID: z.string().optional(),
   },
 
   experimental__runtimeEnv: {
-    NEXT_PUBLIC_OPENPANEL_CLIENT_ID: process.env.NEXT_PUBLIC_OPENPANEL_CLIENT_ID,
-    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
+    // Core
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
+    // Analytics
+    NEXT_PUBLIC_OPENPANEL_CLIENT_ID: process.env.NEXT_PUBLIC_OPENPANEL_CLIENT_ID,
+    NEXT_PUBLIC_GA4_MEASUREMENT_ID: process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID,
+    // Billing
+    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
     NEXT_PUBLIC_STRIPE_PRICE_MONTHLY_EU: process.env.NEXT_PUBLIC_STRIPE_PRICE_MONTHLY_EU,
     NEXT_PUBLIC_STRIPE_PRICE_YEARLY_EU: process.env.NEXT_PUBLIC_STRIPE_PRICE_YEARLY_EU,
     NEXT_PUBLIC_STRIPE_PRICE_MONTHLY_US: process.env.NEXT_PUBLIC_STRIPE_PRICE_MONTHLY_US,
@@ -165,6 +184,5 @@ export const env = createEnv({
     NEXT_PUBLIC_EZOIC_TOP_STEPPER_STEP_1_PLACEMENT_ID: process.env.NEXT_PUBLIC_EZOIC_TOP_STEPPER_STEP_1_PLACEMENT_ID,
     NEXT_PUBLIC_EZOIC_TOP_STEPPER_STEP_2_PLACEMENT_ID: process.env.NEXT_PUBLIC_EZOIC_TOP_STEPPER_STEP_2_PLACEMENT_ID,
     NEXT_PUBLIC_EZOIC_TOP_STEPPER_STEP_3_PLACEMENT_ID: process.env.NEXT_PUBLIC_EZOIC_TOP_STEPPER_STEP_3_PLACEMENT_ID,
-    NEXT_PUBLIC_GA4_MEASUREMENT_ID: process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID,
   },
 });

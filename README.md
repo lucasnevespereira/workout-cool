@@ -41,7 +41,7 @@
 - [Project Origin & Motivation](#-project-origin--motivation)
 - [Quick Start](#quick-start)
 - [Exercise Database Import](#exercise-database-import)
-- [Project Architecture](#project-architecture)
+- [Project Architecture](#project-architecture) | [Full Architecture Guide](docs/ARCHITECTURE.md)
 - [Contributing](#contributing)
 - [Self-hosting](#deployment--self-hosting)
 - [Resources](#resources)
@@ -92,6 +92,11 @@
 
 A comprehensive fitness coaching platform that allows create workout plans for you, track progress, and access a vast exercise database with
 detailed instructions and video demonstrations.
+
+> **Note:** This project also serves as the **API backend** for the workout.cool mobile app.
+> Some database models and API routes exist to support it (marked with `[MOBILE]` in the codebase).
+> **Self-hosters can safely ignore these** — they are fully optional and unused tables remain empty.
+> See [Architecture](docs/ARCHITECTURE.md) for details.
 
 ## 🎯 Project Origin & Motivation
 

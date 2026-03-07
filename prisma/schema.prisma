@@ -1,5 +1,11 @@
 // This is your Prisma schema file
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
+//
+// NOTE: This schema serves both the web app and the mobile app API.
+// Models marked with [MOBILE] are primarily used by the mobile app (iOS/Android).
+// Models marked with [BILLING] handle subscription and payment logic.
+// Self-hosters can safely ignore these — the tables will remain empty
+// if the corresponding features are not configured.
 
 generator client {
   provider = "prisma-client-js"
@@ -351,6 +357,14 @@ enum WorkoutSetUnit {
 // ========================================
 // BILLING & SUBSCRIPTION MODELS
 // ========================================
+//
+// These models handle premium subscriptions across platforms:
+// - Stripe: used for web subscriptions
+// - RevenueCat: used for mobile in-app purchases (iOS/Android) [MOBILE]
+// - License: used for self-hosted instances
+//
+// Self-hosters: these tables are created by migrations but remain empty
+// unless you configure a billing provider. They do not affect core functionality.
 
 // Plans d'abonnement - provider-agnostic, minimal KISS approach
 model SubscriptionPlan {
@@ -402,7 +416,8 @@ model PlanProviderMapping {
   @@map("plan_provider_mappings")
 }
 
-// Abonnements utilisateurs (source de vérité : RevenueCat pour mobile)
+// Abonnements utilisateurs
+// Source of truth: Stripe for web, RevenueCat for mobile [MOBILE]
 model Subscription {
   id     String @id @default(cuid())
   userId String
@@ -432,7 +447,7 @@ model Subscription {
   @@map("subscriptions")
 }
 
-// Licences pour self-hosted (alternative aux subscriptions)
+// License keys for self-hosted instances (alternative to subscriptions)
 model License {
   id  String @id @default(cuid())
   key String @unique
@@ -458,7 +473,9 @@ model License {
   @@map("licenses")
 }
 
-// RevenueCat webhook event logging for debugging and monitoring
+// [MOBILE] RevenueCat webhook event logging for debugging and monitoring
+// Stores webhook events from RevenueCat (iOS/Android in-app purchases).
+// This table is unused if RevenueCat is not configured.
 model RevenueCatWebhookEvent {
   id String @id @default(cuid())
 
@@ -504,21 +521,25 @@ enum SubscriptionStatus {
   PAUSED
 }
 
+// Platform where the subscription was created
+// WEB = Stripe checkout, IOS/ANDROID = RevenueCat in-app purchase [MOBILE]
 enum Platform {
   WEB
-  IOS
-  ANDROID
+  IOS     // [MOBILE]
+  ANDROID // [MOBILE]
 }
 
+// Supported payment processors
+// Self-hosters typically use STRIPE or NONE
 enum PaymentProcessor {
   STRIPE
   PAYPAL
   LEMONSQUEEZY
   PADDLE
-  APPLE_PAY
-  GOOGLE_PAY
-  REVENUECAT
-  NONE // self-hosted
+  APPLE_PAY   // [MOBILE]
+  GOOGLE_PAY  // [MOBILE]
+  REVENUECAT  // [MOBILE]
+  NONE        // self-hosted / free
   OTHER
 }
 
